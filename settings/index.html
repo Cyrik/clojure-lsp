@@ -421,11 +421,11 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#custom-clj-kondo-hooks" class="md-nav__link">
-    Custom clj-kondo hooks
+  <a href="#custom-clj-kondo-linters" class="md-nav__link">
+    Custom clj-kondo linters
   </a>
   
-    <nav class="md-nav" aria-label="Custom clj-kondo hooks">
+    <nav class="md-nav" aria-label="Custom clj-kondo linters">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -476,6 +476,33 @@
   <a href="#ns-inner-blocks-indentation" class="md-nav__link">
     ns-inner-blocks-indentation
   </a>
+  
+    <nav class="md-nav" aria-label="ns-inner-blocks-indentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#next-line" class="md-nav__link">
+    next-line
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#same-line" class="md-nav__link">
+    same-line
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keep" class="md-nav__link">
+    keep
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -770,11 +797,11 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#custom-clj-kondo-hooks" class="md-nav__link">
-    Custom clj-kondo hooks
+  <a href="#custom-clj-kondo-linters" class="md-nav__link">
+    Custom clj-kondo linters
   </a>
   
-    <nav class="md-nav" aria-label="Custom clj-kondo hooks">
+    <nav class="md-nav" aria-label="Custom clj-kondo linters">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -825,6 +852,33 @@
   <a href="#ns-inner-blocks-indentation" class="md-nav__link">
     ns-inner-blocks-indentation
   </a>
+  
+    <nav class="md-nav" aria-label="ns-inner-blocks-indentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#next-line" class="md-nav__link">
+    next-line
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#same-line" class="md-nav__link">
+    same-line
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keep" class="md-nav__link">
+    keep
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -926,7 +980,7 @@
 </code></pre></div></p>
 <hr />
 <h3 id="global">Global<a class="headerlink" href="#global" title="Permanent link">#</a></h3>
-<p>For global settings which should work for all the projects using <code>clojure-lsp</code>, you just need to add the same configs to <code>~/.lsp/config.edn</code> or <code>$XDG_CONFIG_HOME/.lsp/config.edn</code>.</p>
+<p>For global settings which should work for all the projects using <code>clojure-lsp</code>, you just need to add the same configs to <code>~/.lsp/config.edn</code> or <code>$XDG_CONFIG_HOME/clojure-lsp/config.edn</code>.</p>
 <p>For an example of a global <code>config.edn</code>, check <a href="https://github.com/ericdallo/dotfiles/blob/master/.lsp/config.edn">here</a>.</p>
 <hr />
 <h3 id="initializationoptions">InitializationOptions<a class="headerlink" href="#initializationoptions" title="Permanent link">#</a></h3>
@@ -971,6 +1025,11 @@
 <td><code>source-aliases</code></td>
 <td>Used for <code>deps.edn</code> or <code>project.clj</code> projects, the aliases which clojure-lsp should get the source-paths besides the root level <code>:paths</code> and <code>:extra-paths</code>. Check the <code>source-aliases discovery</code> section below.</td>
 <td><code>#{:dev :test}</code></td>
+</tr>
+<tr>
+<td><code>use-source-paths-from-classpath</code></td>
+<td>Whether to check source-paths from classpath or manually discover</td>
+<td><code>true</code></td>
 </tr>
 <tr>
 <td><code>linters</code></td>
@@ -1088,6 +1147,11 @@
 <td><code>[]</code></td>
 </tr>
 <tr>
+<td><code>copy-kondo-configs?</code></td>
+<td>Whether to copy clj-kondo hooks configs exported by libs on classpath during startup lint.</td>
+<td><code>true</code></td>
+</tr>
+<tr>
 <td><code>cache-path</code></td>
 <td>Where to store the project's analysis cache, used to speed up next <code>clojure-lsp</code> startup. A path relative to project root or an absolute path.</td>
 <td><code>.lsp/.cache</code></td>
@@ -1106,11 +1170,11 @@
 </table>
 <h3 id="classpath-scan">Classpath scan<a class="headerlink" href="#classpath-scan" title="Permanent link">#</a></h3>
 <p>clojure-lsp needs to analyze the whole project and its dependencies to understand your code for most features, during the startup clojure-lsp will try to find the classpath of your project to pass to clj-kondo later. </p>
-<p>You can configure how clojure-lsp should find the classpath with the <code>project-specs</code> setting, check the default <a href="https://github.com/clojure-lsp/clojure-lsp/blob/master/src/clojure_lsp/crawler.clj#L53-L60">here</a>.</p>
+<p>You can configure how clojure-lsp should find the classpath with the <code>project-specs</code> setting, but keep in mind that usually the <a href="https://github.com/clojure-lsp/clojure-lsp/blob/master/lib/src/clojure_lsp/classpath.clj#L108-L123">default</a> is enough, it will also consider the <code>:source-aliases</code> setting if any to find the classpath using those aliases.</p>
 <p>Supported project types at the moment are:</p>
 <ul>
-<li><code>leiningen</code>: If a <code>project.clj</code> is found at the project root, clojure-lsp will run <code>lein classpath</code>.</li>
-<li><code>deps</code>: If a <code>deps.edn</code> is found at the project root, clojure-lsp will run <code>clojure -Spath</code>.</li>
+<li><code>leiningen</code>: If a <code>project.clj</code> is found at the project root, clojure-lsp will run <code>lein classpath</code> with <code>:source-aliases</code> specified if any.</li>
+<li><code>deps</code>: If a <code>deps.edn</code> is found at the project root, clojure-lsp will run <code>clojure -Spath</code> with <code>:source-aliases</code> specified if any.</li>
 <li><code>boot</code>: If a <code>build.boot</code> is found at the project root, clojure-lsp will run <code>boot show --fake-classpath</code>.</li>
 <li><code>shadow-cljs</code>: If a <code>shadow-cljs.edn</code> is found at the project root, clojure-lsp will run <code>npx shadow-cljs classpath</code>.</li>
 <li><code>babashka</code>: If a <code>bb.edn</code> is found at the project root, clojure-lsp will run <code>bb print-deps --format classpath</code>.</li>
@@ -1120,7 +1184,7 @@
 <p>Alternatively, you can configure the <code>project-specs</code> specific for your project, for example:</p>
 <p><code>.lsp/config.edn</code>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="ss">:project-specs</span> <span class="p">[{</span><span class="ss">:project-path</span> <span class="s">&quot;deps.edn&quot;</span>
-                  <span class="ss">:classpath-cmd</span> <span class="p">[</span><span class="s">&quot;clojure&quot;</span> <span class="s">&quot;-A:dev&quot;</span> <span class="s">&quot;-Spath&quot;</span><span class="p">]}]}</span>
+                  <span class="ss">:classpath-cmd</span> <span class="p">[</span><span class="s">&quot;clojure&quot;</span> <span class="s">&quot;-A:my-custom-alias&quot;</span> <span class="s">&quot;-Spath&quot;</span><span class="p">]}]}</span>
 </code></pre></div></p>
 <p>Note that clojure-lsp will make this scan to save the cache when:</p>
 <ul>
@@ -1159,9 +1223,10 @@ linter enabled via `ale` will only conflict with the built-in clj-kondo bundled 
 
 </details>
 
+<p>Also, clojure-lsp by default pass <code>copy-configs</code> flag as <code>true</code> to clj-kondo to copy configurations exported from libs on classpath, to disable this behavior, set <code>copy-kondo-configs?</code> setting to false.</p>
 <p>For more information about all clj-kondo available configurations,
 check the <a href="https://github.com/clj-kondo/clj-kondo/blob/master/doc/config.md">clj-kondo configuration section</a></p>
-<h5 id="custom-clj-kondo-hooks">Custom clj-kondo hooks<a class="headerlink" href="#custom-clj-kondo-hooks" title="Permanent link">#</a></h5>
+<h5 id="custom-clj-kondo-linters">Custom clj-kondo linters<a class="headerlink" href="#custom-clj-kondo-linters" title="Permanent link">#</a></h5>
 <p>Clojure-lsp register custom linters in clj-kondo, for specifically those linters, configurations should be done on clj-kondo config files, e.g. (<code>&lt;project&gt;/.clj-kondo/config.edn</code>), below are the custom linters used:</p>
 <h6 id="clojure-lspunused-public-var">clojure-lsp/unused-public-var<a class="headerlink" href="#clojure-lspunused-public-var" title="Permanent link">#</a></h6>
 <p>A custom linter that reports public functions/vars not used over the project.</p>
@@ -1178,7 +1243,9 @@ check the <a href="https://github.com/clj-kondo/clj-kondo/blob/master/doc/config
                                                       <span class="nv">my-ns/bar</span>
                                                       <span class="nv">other-ns</span>
                                                       <span class="nv">my-func</span><span class="p">}</span>
-                                           <span class="ss">:exclude-when-defined-by</span> <span class="o">#</span><span class="p">{</span><span class="nv">my-ns/defflow</span><span class="p">}}}}</span>
+                                           <span class="ss">:exclude-regex</span> <span class="o">#</span><span class="p">{</span><span class="s">&quot;my-integration-tests.*&quot;</span><span class="p">}</span>
+                                           <span class="ss">:exclude-when-defined-by</span> <span class="o">#</span><span class="p">{</span><span class="nv">my-ns/defflow</span><span class="p">}</span>
+                                           <span class="ss">:exclude-when-defined-by-regex</span> <span class="o">#</span><span class="p">{</span><span class="s">&quot;my.custom/macro-.*&quot;</span><span class="p">}}}}</span>
 </code></pre></div></p>
 <h4 id="disable-linter">Disable linter<a class="headerlink" href="#disable-linter" title="Permanent link">#</a></h4>
 <p>It's not recommended to disable the linter as it provides helpful smart checks/suggestions for your code, even so it's possible via the following config:</p>
@@ -1189,6 +1256,12 @@ check the <a href="https://github.com/clj-kondo/clj-kondo/blob/master/doc/config
 <h3 id="source-paths-discovery">Source paths discovery<a class="headerlink" href="#source-paths-discovery" title="Permanent link">#</a></h3>
 <p>Some features require know the available source paths of your project, where your code lives, clojure-lsp has some settings for that.</p>
 <ul>
+<li>
+<p>When <code>:use-source-paths-from-classpath</code> setting is enabled (which is true by default), clojure-lsp will get source-paths from the classpath, excluding files that are jar and not under project-root, this usually works for most cases, if not, check <code>:source-aliases</code> or <code>:source-paths</code> settings.</p>
+</li>
+<li>
+<p>If <code>:use-source-paths-from-classpath</code> is manually disabled, clojure-lsp will do the following:</p>
+</li>
 <li>If your project is a <code>lein</code> project, clojure-lsp will scan the <code>project.clj</code> file for <code>:source-paths</code>, <code>:test-paths</code> and the optional <code>source-paths</code> from the specified <code>:source-aliases</code> setting (default <code>#{:dev :test}</code>), unless you specified <code>:source-paths</code> setting manually.</li>
 <li>If your project is a <code>deps.edn</code>, clojure-lsp will scan the <code>deps.edn</code> file for <code>:paths</code>, <code>:extra-paths</code>, <code>:local/root</code> on <code>:deps</code>, <code>:extra-deps</code> and the <code>paths</code>, <code>extra-paths</code>, <code>:local/root</code> in <code>:deps</code> and <code>:extra-deps</code> from the specified <code>:source-aliases</code> setting (default <code>#{:dev :test}</code>), unless you specified <code>:source-paths</code> setting manually.</li>
 <li>If your project is not a <code>deps.edn</code> or <code>lein</code> project, a <code>boot</code> project for example, clojure-lsp will use only the <code>:source-paths</code> setting (default <code>#{"src" "test"}</code>) which should point to the folders containing your clojure code.</li>
@@ -1196,15 +1269,23 @@ check the <a href="https://github.com/clj-kondo/clj-kondo/blob/master/doc/config
 <h3 id="clean">Clean<a class="headerlink" href="#clean" title="Permanent link">#</a></h3>
 <p>Default: Check <code>:clean</code> in <a href="https://github.com/clojure-lsp/clojure-lsp/blob/master/docs/all-available-settings.edn">all-available-settings.edn</a>.</p>
 <h4 id="ns-inner-blocks-indentation">ns-inner-blocks-indentation<a class="headerlink" href="#ns-inner-blocks-indentation" title="Permanent link">#</a></h4>
-<p>Where to place first require/import following <a href="https://github.com/bbatsov/clojure-style-guide#line-breaks-in-ns">Clojure Style Guide</a>, <code>:same-line</code>, <code>:next-line</code> or <code>:keep</code>.</p>
+<p>How to indent ns children forms like require,import.</p>
+<h5 id="next-line"><code>next-line</code><a class="headerlink" href="#next-line" title="Permanent link">#</a></h5>
+<p>Keep first child on the next line of <code>:require</code>/<code>:import</code> and next children following the same indentation. Recommended by <a href="https://stuartsierra.com/2016/08/27/how-to-ns">how-to-ns</a> guide too.
+Check <code>;; better</code> on <a href="https://github.com/bbatsov/clojure-style-guide#line-break-ns-declaration">Clojure Style Guide</a>.</p>
+<h5 id="same-line"><code>same-line</code><a class="headerlink" href="#same-line" title="Permanent link">#</a></h5>
+<p>Keep first child on the same line of <code>:require</code>/<code>:import</code> and next children following the same indentation.
+Check <code>;; good</code> on <a href="https://github.com/bbatsov/clojure-style-guide#line-break-ns-declaration">Clojure Style Guide</a>.</p>
+<h5 id="keep"><code>keep</code><a class="headerlink" href="#keep" title="Permanent link">#</a></h5>
+<p>Don't change indentation at all, keeping the one user selected first.</p>
 <h4 id="sort">sort<a class="headerlink" href="#sort" title="Permanent link">#</a></h4>
-<h5 id="ns">ns<a class="headerlink" href="#ns" title="Permanent link">#</a></h5>
-<p>Whether to enable sort of <code>ns</code> children like require,import forms following <a href="https://github.com/bbatsov/clojure-style-guide#comprehensive-ns-declaration">Clojure Style Guide</a>.</p>
-<h5 id="require">require<a class="headerlink" href="#require" title="Permanent link">#</a></h5>
+<h5 id="ns"><code>ns</code><a class="headerlink" href="#ns" title="Permanent link">#</a></h5>
+<p>Whether to enable sort of <code>ns</code> children like require, import forms following <a href="https://github.com/bbatsov/clojure-style-guide#comprehensive-ns-declaration">Clojure Style Guide</a>.</p>
+<h5 id="require"><code>require</code><a class="headerlink" href="#require" title="Permanent link">#</a></h5>
 <p>Whether to enable sort of <code>:require</code> form. <code>true</code> to sort according to the Clojure Style Guide, <code>:lexicographically</code> to do a lexicographic sort that places unwrapped namespaces last.</p>
-<h5 id="import">import<a class="headerlink" href="#import" title="Permanent link">#</a></h5>
+<h5 id="import"><code>import</code><a class="headerlink" href="#import" title="Permanent link">#</a></h5>
 <p>Whether to enable sort of <code>:import</code> form.</p>
-<h5 id="refer">refer<a class="headerlink" href="#refer" title="Permanent link">#</a></h5>
+<h5 id="refer"><code>refer</code><a class="headerlink" href="#refer" title="Permanent link">#</a></h5>
 <p>Whether to enable sort of <code>:refer</code> form.</p>
 <ul>
 <li><code>:max-line-length</code>: the max refers to keep at same line before breaking the line. Default <code>80</code>.</li>
@@ -1260,7 +1341,7 @@ The available settings inside <code>:stubs</code> are:</p>
 <div class="md-source-date">
   <small>
     
-      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">January 25, 2022</span>
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">March 15, 2022</span>
     
   </small>
 </div>
